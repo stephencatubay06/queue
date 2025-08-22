@@ -1,0 +1,79 @@
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
+
+public class JavaApplication {
+    static class Customer {
+        private final String name;
+        private final int number;
+
+        public Customer(String name, int number) {
+            this.name = name;
+            this.number = number;
+        }
+
+        @Override
+        public String toString() {
+            return "Customer #" + number + " (" + name + ")";
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Queue<Customer> queue = new LinkedList<>();
+        int nextNumber = 1;
+
+        while (true) {
+            System.out.println("\n--- Bank Queue Menu ---");
+            System.out.println("1. Add customer to queue");
+            System.out.println("2. Serve next customer");
+            System.out.println("3. View queue");
+            System.out.println("4. Exit");
+            System.out.print("Choose an option: ");
+
+            String choice = scanner.nextLine().trim();
+
+            switch (choice) {
+                case "1":
+                    System.out.print("Enter customer name: ");
+                    String name = scanner.nextLine().trim();
+                    Customer customer = new Customer(name, nextNumber++);
+                    queue.add(customer);
+                    System.out.println(name + " has been added as " + customer);
+                    displayQueue(queue);
+                    break;
+
+                case "2":
+                    if (queue.isEmpty()) {
+                        System.out.println("No customers in queue to serve.");
+                    } else {
+                        Customer served = queue.poll();
+                        System.out.println("Serving " + served);
+                    }
+                    displayQueue(queue);
+                    break;
+
+                case "3":
+                    displayQueue(queue);
+                    break;
+
+                case "4":
+                    System.out.println("Exiting. Goodbye!");
+                    scanner.close();
+                    return;
+
+                default:
+                    System.out.println("Invalid selection. Please enter a number between 1 and 4.");
+            }
+        }
+    }
+
+    private static void displayQueue(Queue<Customer> queue) {
+        if (queue.isEmpty()) {
+            System.out.println("Current queue is empty.");
+        } else {
+            System.out.println("Current queue status:");
+            queue.forEach(c -> System.out.println("  - " + c));
+        }
+    }
+}
